@@ -5,12 +5,9 @@ resource "aws_vpc" "demo-vpc" {
   enable_dns_hostnames = true
   enable_dns_support   = true
 
-  tags = merge(
-    var.project_tags,
-    {
-      Name = "demo-vpc"
-    }
-  )
+  tags = merge(var.tags, {
+    Name = "${var.name_prefix}-aurora-vpc"
+  })
 }
 
 # Public Subnets
@@ -22,7 +19,6 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 
   tags = merge(
-    var.project_tags,
     {
       Name = "public-subnet-${count.index + 1}"
       Type = "Public"
@@ -39,7 +35,6 @@ resource "aws_subnet" "private" {
   map_public_ip_on_launch = false
 
   tags = merge(
-    var.project_tags,
     {
       Name = "private-subnet-${count.index + 1}"
       Type = "Private"
@@ -52,7 +47,6 @@ resource "aws_internet_gateway" "demo-igw" {
   vpc_id = aws_vpc.demo-vpc.id
 
   tags = merge(
-    var.project_tags,
     {
       Name = "demo-vpc-igw"
     }
@@ -64,7 +58,6 @@ resource "aws_eip" "nat-ip" {
   domain = "vpc"
 
   tags = merge(
-    var.project_tags,
     {
       Name = "nat-eip"
     }
@@ -77,7 +70,6 @@ resource "aws_nat_gateway" "demo-nat" {
   subnet_id     = aws_subnet.public[0].id
 
   tags = merge(
-    var.project_tags,
     {
       Name = "demo-vpc-nat-gw"
     }
@@ -96,7 +88,6 @@ resource "aws_route_table" "public" {
   }
 
   tags = merge(
-    var.project_tags,
     {
       Name = "public-route-table"
     }
@@ -113,7 +104,6 @@ resource "aws_route_table" "private" {
   }
 
   tags = merge(
-    var.project_tags,
     {
       Name = "private-route-table"
     }

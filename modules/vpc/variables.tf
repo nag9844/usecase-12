@@ -19,8 +19,3 @@ variable "private_subnet_cidrs" {
   description = "CIDR blocks for the private subnets"
   type        = list(string)
 }
-
-variable "project_tags" {
-  description = "Tags to apply to all resources"
-  type        = map(string)
-}

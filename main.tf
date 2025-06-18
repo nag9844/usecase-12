@@ -1,18 +1,28 @@
-# Get VPC data
-data "aws_vpc" "selected" {
-  id = var.vpc_id
-}
+# # Get VPC data
+# data "aws_vpc" "selected" {
+#   id = var.vpc_id
+# }
 
-# Get subnet data
-data "aws_subnets" "database" {
-  filter {
-    name   = "vpc-id"
-    values = [var.vpc_id]
-  }
+# # Get subnet data
+# data "aws_subnets" "database" {
+#   filter {
+#     name   = "vpc-id"
+#     values = [var.vpc_id]
+#   }
 
-  tags = {
-    Type = "database"
-  }
+#   tags = {
+#     Type = "database"
+#   }
+# }
+
+module "vpc" {
+  source = "./modules/vpc"
+  
+  vpc_cidr             = var.vpc_cidr
+  availability_zones   = var.availability_zones
+  public_subnet_cidrs  = var.public_subnet_cidrs
+  private_subnet_cidrs = var.private_subnet_cidrs
+  project_tags         = var.project_tags
 }
 
 # Create secrets manager secret and credentials
@@ -56,7 +66,8 @@ module "aurora" {
   secret_id                        = module.secrets_manager.secret_id
   instance_count                   = var.instance_count
   instance_class                   = var.instance_class
-  subnet_ids                       = length(var.subnet_ids) > 0 ? var.subnet_ids : data.aws_subnets.database.ids
+#   subnet_ids                       = length(var.subnet_ids) > 0 ? var.subnet_ids : data.aws_subnets.database.ids
+  subnet_ids                       = module.vpc.private_subnet_ids
   vpc_security_group_ids           = [module.security.security_group_id]
   backup_retention_period          = var.backup_retention_period
   preferred_backup_window          = var.preferred_backup_window

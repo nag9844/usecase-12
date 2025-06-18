@@ -15,15 +15,39 @@ variable "environment" {
   default     = "dev"
 }
 
-variable "vpc_id" {
-  description = "ID of the VPC where resources will be created"
+# variable "vpc_id" {
+#   description = "ID of the VPC where resources will be created"
+#   type        = string
+# }
+
+# variable "subnet_ids" {
+#   description = "List of subnet IDs for the Aurora cluster"
+#   type        = list(string)
+#   default     = []
+# }
+
+variable "vpc_cidr" {
+  description = "CIDR block for the VPC"
   type        = string
+  default     = "10.0.0.0/16"
 }
 
-variable "subnet_ids" {
-  description = "List of subnet IDs for the Aurora cluster"
+variable "availability_zones" {
+  description = "List of availability zones to use for the subnets"
   type        = list(string)
-  default     = []
+  default     = ["ap-south-1a", "ap-south-1b"]
+}
+
+variable "public_subnet_cidrs" {
+  description = "CIDR blocks for the public subnets"
+  type        = list(string)
+  default     = ["10.0.1.0/24", "10.0.2.0/24"]
+}
+
+variable "private_subnet_cidrs" {
+  description = "CIDR blocks for the private subnets"
+  type        = list(string)
+  default     = ["10.0.11.0/24", "10.0.12.0/24"]
 }
 
 # Database Configuration

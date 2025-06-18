@@ -22,7 +22,7 @@ module "vpc" {
   availability_zones   = var.availability_zones
   public_subnet_cidrs  = var.public_subnet_cidrs
   private_subnet_cidrs = var.private_subnet_cidrs
-  project_tags         = var.project_tags
+  tags                 = local.common_tags
 }
 
 # Create secrets manager secret and credentials
@@ -44,7 +44,7 @@ module "security" {
   source = "./modules/security"
 
   name_prefix               = var.project_name
-  vpc_id                   = var.vpc_id
+  vpc_id                   = module.vpc.vpc_id
   database_port            = var.database_port
   allowed_cidr_blocks      = var.allowed_cidr_blocks
   allowed_security_groups  = var.allowed_security_groups

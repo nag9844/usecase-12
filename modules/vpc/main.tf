@@ -5,9 +5,12 @@ resource "aws_vpc" "demo-vpc" {
   enable_dns_hostnames = true
   enable_dns_support   = true
 
-  tags = merge(var.tags, {
-    Name = "${var.name_prefix}-aurora-vpc"
-  })
+ tags = merge(
+    var.project_tags,
+    {
+      Name = "demo-vpc"
+    }
+  )
 }
 
 # Public Subnets

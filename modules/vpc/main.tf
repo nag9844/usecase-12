@@ -6,9 +6,8 @@ resource "aws_vpc" "demo-vpc" {
   enable_dns_support   = true
 
  tags = merge(
-    var.project_tags,
     {
-      Name = "demo-vpc"
+      Name = "aurora-vpc"
     }
   )
 }

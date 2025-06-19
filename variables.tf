@@ -16,17 +16,6 @@ variable "environment" {
   default     = "dev"
 }
 
-# variable "vpc_id" {
-#   description = "ID of the VPC where resources will be created"
-#   type        = string
-# }
-
-# variable "subnet_ids" {
-#   description = "List of subnet IDs for the Aurora cluster"
-#   type        = list(string)
-#   default     = []
-# }
-
 variable "vpc_cidr" {
   description = "CIDR block for the VPC"
   type        = string
